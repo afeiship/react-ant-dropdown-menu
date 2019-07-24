@@ -20,8 +20,8 @@ export default class extends Component {
 
   static defaultProps = {
     items: [],
-    onMenuClick: noop,
-    valueKey: 'value'
+    valueKey: 'value',
+    onMenuClick: noop
   };
   /*===properties end===*/
 
