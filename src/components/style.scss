@@ -2,3 +2,12 @@ $react-ant-dropdown-menu-options: () !default;
 
 .react-ant-dropdown-menu {
 }
+
+// override for antd
+.ant-dropdown-menu-submenu-selected {
+  background-color: #e6f7ff;
+  &,
+  .ant-dropdown-menu-submenu-title{
+    color: #1890ff;
+  }
+}

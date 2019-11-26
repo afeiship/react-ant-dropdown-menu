@@ -3,15 +3,16 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import noop from '@feizheng/noop';
-import objectAssign from 'object-assign';
 import { Dropdown, Menu } from 'antd';
 
 const CLASS_NAME = 'react-ant-dropdown-menu';
-const RETURN_VALUE = ({ item }) => item;
-const RETURN_TEMPLATE = ({ item }, cb) => {
+const RETURN_TEMPLATE = function({ item, selected }, cb) {
+  const { attachable } = this.props;
   const { value, label } = item;
+  const _label = selected && attachable ? `${label}(${selected.label})` : label;
+  console.log('selected:', selected);
   if (cb) {
-    return <Menu.SubMenu key={value} title={label} children={cb()} />;
+    return <Menu.SubMenu key={value} title={_label} children={cb()} />;
   } else {
     return <Menu.Item key={value}>{label}</Menu.Item>;
   }
@@ -23,22 +24,22 @@ export default class extends Component {
     className: PropTypes.string,
     value: PropTypes.array,
     onChange: PropTypes.func,
-    stop: PropTypes.bool,
-    multiple: PropTypes.bool,
+    attachable: PropTypes.bool,
+    highlighted: PropTypes.bool,
+    stopPropagation: PropTypes.bool,
     items: PropTypes.array,
     template: PropTypes.func,
-    tranform: PropTypes.func,
     menuOptions: PropTypes.object
   };
 
   static defaultProps = {
-    stop: false,
-    multiple: false,
+    highlighted: false,
+    attachable: false,
+    stopPropagation: false,
     items: [],
     value: [],
     defaultValue: [],
     template: RETURN_TEMPLATE,
-    transform: RETURN_VALUE,
     onChange: noop,
     menuOptions: {}
   };
@@ -46,51 +47,58 @@ export default class extends Component {
   constructor(inProps) {
     super(inProps);
     const { value } = inProps;
-    this.state = { value };
+    this.state = { value, valuePath: [] };
+  }
+
+  getSelected(inItem) {
+    const { valuePath } = this.state;
+    const { children } = inItem;
+    if (children && children.length) {
+      return children.find((item) => valuePath.includes(item.value));
+    }
+    return null;
   }
 
   get menuView() {
-    const { items, transform, template, menuOptions } = this.props;
+    const { items, highlighted, template, menuOptions } = this.props;
     const _value = this.state.value;
     const walk = (inItems) => {
-      return inItems.map((menu, index) => {
-        const item = transform({ item: menu, index });
+      return inItems.map((item, index) => {
         const children = item.children;
         const hasChild = children && children.length;
+        const selected = this.getSelected(item);
         const cb = () => walk(children);
-        const args = hasChild ? [{ item, index }, cb] : [{ item, index }];
-        console.log('item::', item);
+        const target = { item, index, selected };
+        const args = hasChild ? [target, cb] : [target];
         return template.apply(this, args);
       });
     };
-
+    const value = highlighted ? _value : [];
     return (
-      <Menu selectedKeys={_value} onClick={this.onMenuClick} {...menuOptions}>
+      <Menu
+        selectedKeys={value}
+        onClick={this.onMenuClick}
+        className={classNames(`${CLASS_NAME}__menu`)}
+        {...menuOptions}>
         {walk(items)}
       </Menu>
     );
   }
 
-  shouldComponentUpdate(inProps) {
-    const { value } = inProps;
-    console.log('should update!');
-    return true;
-  }
-
-  change(inValue) {
-    const target = { value: [inValue] };
+  change(inEvent) {
     const { onChange } = this.props;
-    this.setState(target, () => {
-      onChange({ target });
+    const { key, keyPath } = inEvent;
+    this.setState({ value: key, valuePath: keyPath }, () => {
+      const event = Object.assign(inEvent, { target: { value: key } });
+      onChange(event);
     });
   }
 
   onMenuClick = (inEvent) => {
-    const { domEvent, key, keyPath } = inEvent;
-    const { stop, onChange } = this.props;
-    stop && domEvent.stopProppagation();
-    console.log('key path:', keyPath, inEvent);
-    this.change(key);
+    const { domEvent } = inEvent;
+    const { stopPropagation } = this.props;
+    stopPropagation && domEvent.stopProppagation();
+    this.change(inEvent);
   };
 
   render() {

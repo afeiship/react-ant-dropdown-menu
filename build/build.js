@@ -16,6 +16,8 @@ export default merge(baseConfig, {
   }),
   externals: externals.base({
     '@feizheng/noop': '@feizheng/noop',
+    '@feizheng/next-js-core2': '@feizheng/next-js-core2',
+    '@feizheng/next-traverse': '@feizheng/next-traverse',
     antd: 'antd'
   }),
   plugins: [plugins.clean(), plugins.copyStyles()]
