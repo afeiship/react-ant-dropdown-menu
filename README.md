@@ -19,11 +19,13 @@ npm install -S @feizheng/react-ant-dropdown-menu
   import ReactAntDropdownMenu from '../src/main';
   import ReactDOM from 'react-dom';
   import React from 'react';
-  import { Menu } from 'antd';
+  import { Menu, Switch, Button } from 'antd';
   import './assets/style.scss';
 
   class App extends React.Component {
     state = {
+      attachable: false,
+      highlighted: false,
       value: ['m1-1-2'],
       items: [
         {
@@ -47,6 +49,11 @@ npm install -S @feizheng/react-ant-dropdown-menu
                   value: 'm1-1-2'
                 }
               ]
+            },
+            {
+              icon: 'm1-2-icon',
+              label: 'Menu1-2',
+              value: 'm1-2'
             }
           ]
         },
@@ -63,42 +70,54 @@ npm install -S @feizheng/react-ant-dropdown-menu
       ]
     };
 
-    _onMenuClick = (inEvent) => {
-      console.log('event:->', inEvent);
-    };
-
-    template = ({ item }, cb) => {
-      const { value, icon, label } = item;
+    template({ item, selected }, cb) {
+      const { attachable } = this.props;
+      const { value, label } = item;
+      const _label =
+        selected && attachable ? `${label}(${selected.label})` : label;
       if (cb) {
-        return (
-          <Menu.SubMenu
-            data-icon={icon}
-            key={value}
-            title={`${icon} - ${label}`}
-            children={cb()}
-          />
-        );
+        return <Menu.SubMenu key={value} title={_label} children={cb()} />;
       } else {
-        return (
-          <Menu.Item itemIcon={<span>+</span>} data-icon={icon} key={value}>
-            {label}
-          </Menu.Item>
-        );
+        return <Menu.Item key={value}>{label}</Menu.Item>;
       }
-    };
+    }
 
     onMenuChange = (inEvent) => {
-      console.log('click');
+      console.log('click', inEvent);
+    };
+
+    onChange = (inRole, inEvent) => {
+      this.setState({
+        [inRole]: inEvent
+      });
     };
 
     render() {
-      const { items } = this.state;
+      const { attachable, highlighted, items } = this.state;
       return (
         <div className="app-container">
+          <p>
+            <label>attachable:</label>
+            <Switch
+              checked={attachable}
+              onChange={this.onChange.bind(this, 'attachable')}
+            />
+          </p>
+          <p>
+            <label>highlighted:</label>
+            <Switch
+              checked={highlighted}
+              onChange={this.onChange.bind(this, 'highlighted')}
+            />
+          </p>
           <ReactAntDropdownMenu
+            attachable={attachable}
+            highlighted={highlighted}
             items={items}
-            template={this.template}>
-            <button>Test Dropdown</button>
+            template={this.template}
+            onChange={this.onMenuChange}
+            >
+            <Button>Test Dropdown</Button>
           </ReactAntDropdownMenu>
         </div>
       );
@@ -106,7 +125,6 @@ npm install -S @feizheng/react-ant-dropdown-menu
   }
 
   ReactDOM.render(<App />, document.getElementById('app'));
-
   ```
 
 ## documentation
