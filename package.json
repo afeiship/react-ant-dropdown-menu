@@ -1,7 +1,7 @@
 {
-  "name": "react-ant-dropdown-menu",
+  "name": "@feizheng/react-ant-dropdown-menu",
   "version": "1.0.0",
-  "description": "Dropdown + menu for antd.",
+  "description": "Dropdown + menu based on antd.",
   "main": "dist/index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --env.type=dev",
@@ -44,26 +44,31 @@
     "@babel/preset-env": "^7.4.2",
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.4.0",
+    "@feizheng/rake-git": "^1.2.0",
+    "@feizheng/webpack-lib-kits": "^1.1.0",
+    "antd": "^3.25.3",
     "babel-loader": "^8.0.5",
     "cross-env": "^5.2.0",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.1",
     "express": "^4.16.4",
     "jest": "^24.5.0",
+    "node-sass": "^4.12.0",
     "prettier": "^1.16.4",
-    "rake-git": "github:afeiship/rake-git",
     "react-testing-library": "^6.0.2",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.2.1",
-    "webpack-lib-kits": "github:afeiship/webpack-lib-kits",
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
-    "antd": "^3.20.5",
+    "@feizheng/noop": "^1.0.0",
     "classnames": "^2.2.6",
-    "node-sass": "^4.12.0",
-    "noop": "github:afeiship/noop",
     "prop-types": "^15.7.2",
     "react": "^16.8.5",
     "react-dom": "^16.8.5"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
   }
 }
