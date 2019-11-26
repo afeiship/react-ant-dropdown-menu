@@ -1,6 +1,6 @@
 {
   "name": "@feizheng/react-ant-dropdown-menu",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Dropdown + menu based on antd.",
   "main": "dist/index.js",
   "scripts": {
