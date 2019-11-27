@@ -15,7 +15,7 @@ npm install -S @feizheng/react-ant-dropdown-menu
   $react-ant-dropdown-menu-options: ()
   ```
 2. import js
-  ```js
+  ```jsx
   import ReactAntDropdownMenu from '../src/main';
   import ReactDOM from 'react-dom';
   import React from 'react';
@@ -24,7 +24,6 @@ npm install -S @feizheng/react-ant-dropdown-menu
 
   class App extends React.Component {
     state = {
-      attachable: false,
       highlighted: false,
       value: ['m1-1-2'],
       items: [
@@ -71,10 +70,8 @@ npm install -S @feizheng/react-ant-dropdown-menu
     };
 
     template({ item, selected }, cb) {
-      const { attachable } = this.props;
       const { value, label } = item;
-      const _label =
-        selected && attachable ? `${label}(${selected.label})` : label;
+      const _label = selected ? `${label}(${selected.label})` : label;
       if (cb) {
         return <Menu.SubMenu key={value} title={_label} children={cb()} />;
       } else {
@@ -83,7 +80,8 @@ npm install -S @feizheng/react-ant-dropdown-menu
     }
 
     onMenuChange = (inEvent) => {
-      console.log('click', inEvent);
+      const { value } = inEvent.target;
+      this.setState({ value });
     };
 
     onChange = (inRole, inEvent) => {
@@ -93,16 +91,10 @@ npm install -S @feizheng/react-ant-dropdown-menu
     };
 
     render() {
-      const { attachable, highlighted, items } = this.state;
+      const { highlighted, value, items } = this.state;
+      console.log('render value:', value);
       return (
         <div className="app-container">
-          <p>
-            <label>attachable:</label>
-            <Switch
-              checked={attachable}
-              onChange={this.onChange.bind(this, 'attachable')}
-            />
-          </p>
           <p>
             <label>highlighted:</label>
             <Switch
@@ -111,12 +103,13 @@ npm install -S @feizheng/react-ant-dropdown-menu
             />
           </p>
           <ReactAntDropdownMenu
-            attachable={attachable}
-            highlighted={highlighted}
-            items={items}
-            template={this.template}
-            onChange={this.onMenuChange}
-            >
+            menuOptions={{
+              highlighted,
+              value,
+              items,
+              template: this.template,
+              onChange: this.onMenuChange
+            }}>
             <Button>Test Dropdown</Button>
           </ReactAntDropdownMenu>
         </div>
@@ -125,6 +118,7 @@ npm install -S @feizheng/react-ant-dropdown-menu
   }
 
   ReactDOM.render(<App />, document.getElementById('app'));
+
   ```
 
 ## documentation

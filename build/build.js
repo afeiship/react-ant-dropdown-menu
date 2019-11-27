@@ -18,6 +18,7 @@ export default merge(baseConfig, {
     '@feizheng/noop': '@feizheng/noop',
     '@feizheng/next-js-core2': '@feizheng/next-js-core2',
     '@feizheng/next-traverse': '@feizheng/next-traverse',
+    '@feizheng/react-ant-menu': '@feizheng/react-ant-menu',
     antd: 'antd'
   }),
   plugins: [plugins.clean(), plugins.copyStyles()]

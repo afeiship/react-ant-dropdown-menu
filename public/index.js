@@ -6,7 +6,6 @@ import './assets/style.scss';
 
 class App extends React.Component {
   state = {
-    attachable: false,
     highlighted: false,
     value: ['m1-1-2'],
     items: [
@@ -53,10 +52,8 @@ class App extends React.Component {
   };
 
   template({ item, selected }, cb) {
-    const { attachable } = this.props;
     const { value, label } = item;
-    const _label =
-      selected && attachable ? `${label}(${selected.label})` : label;
+    const _label = selected ? `${label}(${selected.label})` : label;
     if (cb) {
       return <Menu.SubMenu key={value} title={_label} children={cb()} />;
     } else {
@@ -65,7 +62,8 @@ class App extends React.Component {
   }
 
   onMenuChange = (inEvent) => {
-    console.log('click', inEvent);
+    const { value } = inEvent.target;
+    this.setState({ value });
   };
 
   onChange = (inRole, inEvent) => {
@@ -75,16 +73,10 @@ class App extends React.Component {
   };
 
   render() {
-    const { attachable, highlighted, items } = this.state;
+    const { highlighted, value, items } = this.state;
+    console.log('render value:', value);
     return (
       <div className="app-container">
-        <p>
-          <label>attachable:</label>
-          <Switch
-            checked={attachable}
-            onChange={this.onChange.bind(this, 'attachable')}
-          />
-        </p>
         <p>
           <label>highlighted:</label>
           <Switch
@@ -93,11 +85,13 @@ class App extends React.Component {
           />
         </p>
         <ReactAntDropdownMenu
-          attachable={attachable}
-          highlighted={highlighted}
-          items={items}
-          template={this.template}
-          onChange={this.onMenuChange}>
+          menuOptions={{
+            highlighted,
+            value,
+            items,
+            template: this.template,
+            onChange: this.onMenuChange
+          }}>
           <Button>Test Dropdown</Button>
         </ReactAntDropdownMenu>
       </div>
