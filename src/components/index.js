@@ -16,6 +16,7 @@ export default class extends React.Component {
       value: PropTypes.array,
       onChange: PropTypes.func,
       highlighted: PropTypes.bool,
+      stop: PropTypes.bool,
       items: PropTypes.array,
       template: PropTypes.func
     })
@@ -24,6 +25,7 @@ export default class extends React.Component {
   static defaultProps = {
     menuOptions: {
       highlighted: false,
+      stop: false,
       items: [],
       value: [],
       onChange: noop
