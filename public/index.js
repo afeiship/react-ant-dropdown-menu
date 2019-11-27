@@ -97,8 +97,7 @@ class App extends React.Component {
           highlighted={highlighted}
           items={items}
           template={this.template}
-          onChange={this.onMenuChange}
-          >
+          onChange={this.onMenuChange}>
           <Button>Test Dropdown</Button>
         </ReactAntDropdownMenu>
       </div>

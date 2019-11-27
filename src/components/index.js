@@ -10,7 +10,6 @@ const RETURN_TEMPLATE = function({ item, selected }, cb) {
   const { attachable } = this.props;
   const { value, label } = item;
   const _label = selected && attachable ? `${label}(${selected.label})` : label;
-  console.log('selected:', selected);
   if (cb) {
     return <Menu.SubMenu key={value} title={_label} children={cb()} />;
   } else {
@@ -38,7 +37,6 @@ export default class extends Component {
     stopPropagation: false,
     items: [],
     value: [],
-    defaultValue: [],
     template: RETURN_TEMPLATE,
     onChange: noop,
     menuOptions: {}
@@ -88,8 +86,8 @@ export default class extends Component {
   change(inEvent) {
     const { onChange } = this.props;
     const { key, keyPath } = inEvent;
-    this.setState({ value: key, valuePath: keyPath }, () => {
-      const event = Object.assign(inEvent, { target: { value: key } });
+    this.setState({ value: [key], valuePath: keyPath }, () => {
+      const event = Object.assign(inEvent, { target: { value: [key] } });
       onChange(event);
     });
   }
