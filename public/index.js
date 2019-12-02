@@ -51,10 +51,10 @@ class App extends React.Component {
     ]
   };
 
-  template({ item, selected }, cb) {
+  template({ item, selected, independent }, cb) {
     const { value, label } = item;
     const _label = selected ? `${label}(${selected.label})` : label;
-    if (cb) {
+    if (!independent) {
       return <Menu.SubMenu key={value} title={_label} children={cb()} />;
     } else {
       return <Menu.Item key={value}>{label}</Menu.Item>;
