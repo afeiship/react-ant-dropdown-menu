@@ -1,14 +1,13 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import noop from '@feizheng/noop';
-import ReactAntMenu from '@feizheng/react-ant-menu';
-import { Dropdown, Menu } from 'antd';
+import noop from '@jswork/noop';
+import ReactAntMenu from '@jswork/react-ant-menu';
+import { Dropdown } from 'antd';
 
 const CLASS_NAME = 'react-ant-dropdown-menu';
 
-export default class extends React.Component {
+export default class ReactAntDropdownMenu extends React.Component {
   static displayName = CLASS_NAME;
   static propTypes = {
     className: PropTypes.string,
@@ -49,3 +48,4 @@ export default class extends React.Component {
     );
   }
 }
+

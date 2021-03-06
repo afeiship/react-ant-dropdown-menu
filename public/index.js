@@ -1,7 +1,8 @@
-import ReactAntDropdownMenu from '../src/main';
-import ReactDOM from 'react-dom';
+import ReactDemokit from '@jswork/react-demokit';
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Menu, Switch, Button } from 'antd';
+import ReactAntDropdownMenu from '../src/main';
 import './assets/style.scss';
 
 class App extends React.Component {
@@ -74,11 +75,12 @@ class App extends React.Component {
 
   render() {
     const { highlighted, value, items } = this.state;
-    console.log('render value:', value);
     return (
-      <div className="app-container">
+      <ReactDemokit
+        className="p-3 app-container"
+        url="https://github.com/afeiship/react-ant-dropdown-menu">
         <p>
-          <label>highlighted:</label>
+          <label className="mr-2">highlighted:</label>
           <Switch
             checked={highlighted}
             onChange={this.onChange.bind(this, 'highlighted')}
@@ -92,9 +94,9 @@ class App extends React.Component {
             template: this.template,
             onChange: this.onMenuChange
           }}>
-          <Button>Test Dropdown</Button>
+          <button className="button is-primary">Show Dropdown</button>
         </ReactAntDropdownMenu>
-      </div>
+      </ReactDemokit>
     );
   }
 }
